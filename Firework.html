@@ -16,38 +16,78 @@
     <script type="text/javascript" src="./js/functions.js" charset="utf-8"></script>
     <script type="text/javascript" src="./js/love.js" charset="utf-8"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-<style>
-    body {
-        background-color: #000;
-        color: #fff;
-        text-align: center;
-    }
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            margin: 0;
+            overflow: hidden;
+        }
 
-    canvas {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-    }
-</style>
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        #birthday-message {
+            font-family: 'Courier New', monospace;
+            color: #ffeb3b;
+            font-size: 2rem;
+            margin-top: 50px;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 0.15em solid orange;
+            width: 0;
+            animation: typing 4s steps(40, end) forwards, blink 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 100%;
+            }
+        }
+
+        @keyframes blink {
+            50% {
+                border-color: transparent;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        }
+    </style>
+</head>
 
 <body>
 
     <canvas id="Canvas"></canvas>
+    <h1 id="birthday-message">🎉 Happy Birthday to You! 🎂</h1>
     <audio id="player" loop>
         <source
             src="https://www.dropbox.com/scl/fi/ny6bu1oybczrartz31w3x/ChucMungSinhNhat-PhanDinhTung-2804028.mp3?rlkey=u4cp9vrhwa6rh5pw4vxs82zbl&st=37tlfl9c&dl=1"
             type="audio/mp3" />
     </audio>
+
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-            // Kiểm tra nếu trình duyệt hỗ trợ autoplay, nếu không có thì yêu cầu người dùng bật nhạc
-            const player = document.getElementById('player');
-
-            // Tạo thông báo yêu cầu bật nhạc
             Swal.fire({
                 title: '🎵 Bật nhạc chứ?',
                 text: 'Bạn có muốn bật nhạc nền không?',
@@ -59,6 +99,7 @@
                 allowEscapeKey: false
             }).then((result) => {
                 if (result.isConfirmed) {
+                    const player = document.getElementById('player');
                     player.play().catch((e) => {
                         console.log("Trình duyệt từ chối phát tự động:", e);
                     });
@@ -77,7 +118,6 @@
         window.onresize = function () { reset(); }
         reset();
         function reset() {
-
             cwidth = window.innerWidth;
             cheight = window.innerHeight;
             c.width = cwidth;
@@ -85,7 +125,6 @@
         }
 
         function newShell() {
-
             var left = (Math.random() > 0.5);
             var shell = {};
             shell.x = (1 * left);
@@ -94,61 +133,73 @@
             shell.yoff = 0.01 + Math.random() * 0.007;
             shell.size = Math.random() * 6 + 3;
             shell.color = colors[Math.floor(Math.random() * colors.length)];
-
             shells.push(shell);
         }
 
         function newPass(shell) {
-
             var pasCount = Math.ceil(Math.pow(shell.size, 2) * Math.PI);
-
             for (i = 0; i < pasCount; i++) {
-
                 var pas = {};
                 pas.x = shell.x * cwidth;
                 pas.y = shell.y * cheight;
-
                 var a = Math.random() * 4;
                 var s = Math.random() * 10;
-
                 pas.xoff = s * Math.sin((5 - a) * (Math.PI / 2));
                 pas.yoff = s * Math.sin(a * (Math.PI / 2));
-
                 pas.color = shell.color;
                 pas.size = Math.sqrt(shell.size);
-
                 if (pass.length < 1000) { pass.push(pas); }
             }
         }
 
-        var lastRun = 0;
-        Run();
-        function Run() {
+        const particles = [];
+        for (let i = 0; i < 100; i++) {
+            particles.push({
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                speedY: 1 + Math.random() * 2,
+                size: 5 + Math.random() * 5,
+                symbol: Math.random() > 0.5 ? "❄" : "❤",
+                color: Math.random() > 0.5 ? "#fff" : "#f06292"
+            });
+        }
 
+        function drawParticles() {
+            ctx.font = "20px Arial";
+            particles.forEach(p => {
+                ctx.fillStyle = p.color;
+                ctx.fillText(p.symbol, p.x, p.y);
+                p.y += p.speedY;
+                if (p.y > window.innerHeight) {
+                    p.y = -20;
+                    p.x = Math.random() * window.innerWidth;
+                }
+            });
+        }
+
+        var lastRun = 0;
+        function Run() {
             var dt = 1;
             if (lastRun != 0) { dt = Math.min(50, (performance.now() - lastRun)); }
             lastRun = performance.now();
 
-            //ctx.clearRect(0, 0, cwidth, cheight);
             ctx.fillStyle = "rgba(0,0,0,0.25)";
             ctx.fillRect(0, 0, cwidth, cheight);
+
+            drawParticles();
 
             if ((shells.length < 10) && (Math.random() > 0.96)) { newShell(); }
 
             for (let ix in shells) {
-
                 var shell = shells[ix];
-
                 ctx.beginPath();
                 ctx.arc(shell.x * cwidth, shell.y * cheight, shell.size, 0, 2 * Math.PI);
                 ctx.fillStyle = shell.color;
                 ctx.fill();
-
                 shell.x -= shell.xoff;
                 shell.y -= shell.yoff;
                 shell.xoff -= (shell.xoff * dt * 0.001);
                 shell.yoff -= ((shell.yoff + 0.2) * dt * 0.00005);
-
                 if (shell.yoff < -0.005) {
                     newPass(shell);
                     shells.splice(ix, 1);
@@ -156,20 +207,16 @@
             }
 
             for (let ix in pass) {
-
                 var pas = pass[ix];
-
                 ctx.beginPath();
                 ctx.arc(pas.x, pas.y, pas.size, 0, 2 * Math.PI);
                 ctx.fillStyle = pas.color;
                 ctx.fill();
-
                 pas.x -= pas.xoff;
                 pas.y -= pas.yoff;
                 pas.xoff -= (pas.xoff * dt * 0.001);
                 pas.yoff -= ((pas.yoff + 5) * dt * 0.0005);
                 pas.size -= (dt * 0.002 * Math.random())
-
                 if ((pas.y > cheight) || (pas.y < -50) || (pas.size <= 0)) {
                     pass.splice(ix, 1);
                 }
@@ -177,6 +224,21 @@
             requestAnimationFrame(Run);
         }
 
+        Run();
+
+        // Click hiệu ứng ngôi sao
+        document.addEventListener("click", function (e) {
+            const el = document.createElement("div");
+            el.textContent = "✨";
+            el.style.position = "absolute";
+            el.style.left = e.pageX + "px";
+            el.style.top = e.pageY + "px";
+            el.style.fontSize = "20px";
+            el.style.pointerEvents = "none";
+            el.style.animation = "fadeOut 1s forwards";
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 1000);
+        });
     </script>
 </body>
 
