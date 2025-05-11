@@ -8,6 +8,7 @@
 </head>
 
 <body>
+
     <div class="box">
         <ul class="minbox">
             <li></li>
@@ -31,27 +32,7 @@
             src="https://www.dropbox.com/scl/fi/ny6bu1oybczrartz31w3x/ChucMungSinhNhat-PhanDinhTung-2804028.mp3?rlkey=u4cp9vrhwa6rh5pw4vxs82zbl&st=37tlfl9c&dl=1"
             type="audio/mp3" />
     </audio>
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            Swal.fire({
-                title: '🎵 Bật nhạc chứ?',
-                text: 'Bạn có muốn bật nhạc nền không?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'Có',
-                cancelButtonText: 'Không',
-                allowOutsideClick: false,
-                allowEscapeKey: false
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const player = document.getElementById('player');
-                    player.play().catch((e) => {
-                        console.log("Trình duyệt từ chối phát tự động:", e);
-                    });
-                }
-            });
-        });
-    </script>
+
 </body>
 
 </html>
