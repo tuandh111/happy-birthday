@@ -78,6 +78,25 @@
 
 
     <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            Swal.fire({
+                title: '🎵 Bật nhạc chứ?',
+                text: 'Bạn có muốn bật nhạc nền không?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+                cancelButtonText: 'Không',
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const player = document.getElementById('player');
+                    player.play().catch((e) => {
+                        console.log("Trình duyệt từ chối phát tự động:", e);
+                    });
+                }
+            });
+        });
         // Ngày sinh (21-4-2000) và ngày sinh nhật tiếp theo (21-4-năm hiện tại)
         var birthday = new Date('2000-05-16');
         var nextBirthday = getNextBirthday();

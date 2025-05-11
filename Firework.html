@@ -42,6 +42,25 @@
             type="audio/mp3" />
     </audio>
     <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            Swal.fire({
+                title: '🎵 Bật nhạc chứ?',
+                text: 'Bạn có muốn bật nhạc nền không?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+                cancelButtonText: 'Không',
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const player = document.getElementById('player');
+                    player.play().catch((e) => {
+                        console.log("Trình duyệt từ chối phát tự động:", e);
+                    });
+                }
+            });
+        });
         var c = document.getElementById("Canvas");
         var ctx = c.getContext("2d");
 
