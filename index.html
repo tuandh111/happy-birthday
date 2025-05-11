@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="./img/CILKGax.png" />
+    <!-- 1. Tiêu đề của file index -->
+    <title>Happy birthday</title>
+    <link rel="stylesheet" href="./css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+<body class="page__main">
+    <div class="buttons">
+        <!-- Chữ ở menu bạn có thể sửa lại theo ý của bạn -->
+        <a href="index.html" class="btn btn-bir">Sinh nhật</a>
+        <a href="timeline.html" class="btn btn-timeline">Dòng thời gian</a>
+        <a href="Firework.html" class="btn btn-timeline">Pháo hoa</a>
+        <a href="gallery/index.html" class="btn btn-gallery">Ảnh kĩ niệm</a>
+    </div>
+
+    <!-- 2. Phần ảnh của người bạn mún chúc -->
+    <img src="./img/9SHW2XH.jpg" alt="" class="cover" />
+
+    <!-- 3. Phần nhạc -->
+    <audio id="player" autoplay loop>
+        <source
+            src="https://www.dropbox.com/scl/fi/l3abw91z5mbmo4wzc3rbv/PleaseTellMeWhy-BaoThy-4045805.mp3?rlkey=p8bxwqa9ghrva6dhh87geqfjs&st=etwgbfhp&dl=1"
+            type="audio/mp3" />
+    </audio>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            Swal.fire({
+                title: '🎵 Bật nhạc chứ?',
+                text: 'Bạn có muốn bật nhạc nền không?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+                cancelButtonText: 'Không',
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const player = document.getElementById('player');
+                    player.play().catch((e) => {
+                        console.log("Trình duyệt từ chối phát tự động:", e);
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
