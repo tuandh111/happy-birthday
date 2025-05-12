@@ -1,0 +1,95 @@
+<!DOCTYPR html>
+
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Birthday Gift - By Your Name</title>
+        <!-- Link CSS Style.css file-->
+        <link rel="stylesheet" href="style.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </head>
+
+    <body>
+        <div class='moon'>
+            <div class='crater1'></div>
+            <div class='crater2'></div>
+            <div class='crater3'></div>
+        </div>
+
+        <canvas id="canvas"></canvas>
+
+        <div id="sea"></div>
+        <div id="beach"></div>
+        <!-- online image -->
+        <img src="https://dl.dropbox.com/s/2k0mtrxc2dqurmh/jumping.png" alt="Jumping-people" id="people" />
+
+        <div id="merrywrap" class="merrywrap">
+            <div class="giftbox">
+                <div class="cover">
+                    <div></div>
+                </div>
+
+                <div class="box"></div>
+            </div>
+
+            <div class="icons">
+                <div class="row">
+                    <span>H</span>
+                    <span>A</span>
+                    <span>P</span>
+                    <span>P</span>
+                    <span>Y</span>
+
+                </div>
+                <div class="row">
+                    <span>B</span>
+                    <span>I</span>
+                    <span>R</span>
+                    <span>T</span>
+                    <span>H</span>
+                    <span>D</span>
+                    <span>A</span>
+                    <span>Y</span>
+                </div>
+
+                <div class="row">
+                    <span>M</span>
+                    <span>I</span>
+                    <span>N</span>
+                    <span>H</span>
+                </div>
+            </div>
+        </div>
+        <audio id="player" loop>
+            <source
+                src="https://www.dropbox.com/scl/fi/01rudnyff6m85xaz4vyug/music.mp3?rlkey=nx7n549tsy18zdpl1epz1j09w&st=1umakibr&dl=1"
+                type="audio/mp3" />
+        </audio>
+
+        <!--link js file-->
+        <script src="index.js"></script>
+        <script>
+            window.addEventListener('DOMContentLoaded', () => {
+                Swal.fire({
+                    title: '🎵 Bật nhạc chứ?',
+                    text: 'Bạn có muốn bật nhạc nền không?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Có',
+                    cancelButtonText: 'Không',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const player = document.getElementById('player');
+                        player.play().catch((e) => {
+                            console.log("Trình duyệt từ chối phát tự động:", e);
+                        });
+                    }
+                });
+            });
+        </script>
+    </body>
+
+    </html>
